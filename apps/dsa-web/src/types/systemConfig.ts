@@ -219,6 +219,7 @@ export type NotificationTestChannel =
   | 'ntfy'
   | 'gotify'
   | 'pushplus'
+  | 'showdoc'
   | 'serverchan3'
   | 'custom'
   | 'discord'

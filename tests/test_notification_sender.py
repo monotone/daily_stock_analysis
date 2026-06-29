@@ -34,6 +34,7 @@ from src.notification_sender import (
     PushoverSender,
     PushplusSender,
     Serverchan3Sender,
+    ShowdocSender,
     SlackSender,
     TelegramSender,
     WechatSender,
@@ -1173,6 +1174,32 @@ class TestPushplusSender(unittest.TestCase):
 
         self.assertTrue(result)
         self.assertGreaterEqual(mock_post.call_count, 2)
+
+
+class TestShowdocSender(unittest.TestCase):
+    """Unit tests for ShowdocSender."""
+
+    def test_send_returns_false_when_no_token(self):
+        cfg = _config()
+        sender = ShowdocSender(cfg)
+        result = sender.send_to_showdoc("hello")
+        self.assertFalse(result)
+
+    @mock.patch("src.notification_sender.showdoc_sender.requests.post")
+    def test_send_success_returns_true(self, mock_post):
+        mock_post.return_value = _response(200, {"code": 0})
+        cfg = _config(showdoc_token="TOKEN")
+        sender = ShowdocSender(cfg)
+        result = sender.send_to_showdoc("hello")
+        self.assertTrue(result)
+
+    @mock.patch("src.notification_sender.showdoc_sender.requests.post")
+    def test_send_checks_response_code(self, mock_post):
+        mock_post.return_value = _response(200, {"code": 400, "msg": "token invalid"})
+        cfg = _config(showdoc_token="TOKEN")
+        sender = ShowdocSender(cfg)
+        result = sender.send_to_showdoc("hello")
+        self.assertFalse(result)
 
 
 class TestServerchan3Sender(unittest.TestCase):

@@ -135,6 +135,12 @@ CHANNEL_PROFILES: Dict[str, ChannelProfile] = {
         default_mode="full_report",
         supports_link=True,
     ),
+    "showdoc": ChannelProfile(
+        channel="showdoc",
+        markdown="markdown",
+        default_mode="full_report",
+        supports_link=True,
+    ),
     "serverchan3": ChannelProfile(
         channel="serverchan3",
         markdown="markdown",

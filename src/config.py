@@ -955,6 +955,9 @@ class Config:
     pushplus_token: Optional[str] = None  # PushPlus Token
     pushplus_topic: Optional[str] = None  # PushPlus 群组编码（一对多推送）
 
+    # ShowDoc 推送配置 (https://push.showdoc.com.cn)
+    showdoc_token: Optional[str] = None  # ShowDoc Token（微信推送）
+
     # Server酱3 推送配置
     serverchan3_sendkey: Optional[str] = None  # Server酱3 SendKey
 
@@ -1800,6 +1803,7 @@ class Config:
             gotify_token=os.getenv('GOTIFY_TOKEN'),
             pushplus_token=os.getenv('PUSHPLUS_TOKEN'),
             pushplus_topic=os.getenv('PUSHPLUS_TOPIC'),
+            showdoc_token=os.getenv('SHOWDOC_TOKEN'),
             serverchan3_sendkey=os.getenv('SERVERCHAN3_SENDKEY'),
             custom_webhook_urls=[u.strip() for u in os.getenv('CUSTOM_WEBHOOK_URLS', '').split(',') if u.strip()],
             custom_webhook_bearer_token=os.getenv('CUSTOM_WEBHOOK_BEARER_TOKEN'),
@@ -3046,6 +3050,7 @@ class Config:
                 and _has_gotify_base_url(self.gotify_url)
             )
             or self.pushplus_token
+            or self.showdoc_token
             or self.serverchan3_sendkey
             or self.custom_webhook_urls
             or self.astrbot_url
