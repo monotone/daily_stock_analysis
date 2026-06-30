@@ -27,7 +27,7 @@ class ShowdocSender:
     用户扫码绑定后获得 token，即可免费推送。
     """
 
-    API_BASE_URL = "https://push.showdoc.com.cn/api/push"
+    API_BASE_URL = "https://push.showdoc.com.cn/server/api/push"
 
     def __init__(self, config: Config):
         """
@@ -85,13 +85,13 @@ class ShowdocSender:
             if response.status_code == 200:
                 try:
                     result = response.json()
-                    # ShowDoc API 成功时 code=0 或 code=200
-                    code = result.get('code') if isinstance(result, dict) else None
-                    if code is None or code == 0 or code == 200:
+                    # ShowDoc API 成功时 error_code=0
+                    error_code = result.get('error_code') if isinstance(result, dict) else None
+                    if error_code is None or error_code == 0:
                         logger.info("ShowDoc 消息发送成功")
                         return True
-                    error_msg = result.get('msg', '未知错误')
-                    logger.error(f"ShowDoc 返回错误 (code={code}): {error_msg}")
+                    error_msg = result.get('error_message', '未知错误')
+                    logger.error(f"ShowDoc 返回错误 (error_code={error_code}): {error_msg}")
                     return False
                 except (ValueError, AttributeError):
                     # 非 JSON 响应但 HTTP 200，视为成功
